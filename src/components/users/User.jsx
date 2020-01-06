@@ -1,54 +1,55 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import {connect} from "react-redux";
 
 import RenderRow from '../RenderRow.jsx';
 import Layout from '../Layout.jsx';
+import Loader from '../Loader/Loader';
+import Fail from '../Fail/Fail.jsx';
+
+import * as usersActions from '../../actions/usersActions';
 
 class User extends Component {
 
-//   async getUsers() {
-//     try {
-//       const data = await axios.get('https://jsonplaceholder.typicode.com/users');
-//       return data.data;
-//     } catch (error) {
-//       console.error(error);
-//       return;
-//     }
 
-//   }
+  componentDidMount() {
+	  if(!this.props.users.length){ 
+	  	this.props.getAll();
 
-//   async componentDidMount() {
-//     const data = await this.getUsers();
-//     this.setState({ users: data})
-
-//   }
+	  }
+  }
 
 	
 	render() {
-    console.log('desde users', this.props);
+		if ( this.props.isLoading) {
+			return <Loader/>
+
+		}
+
+    if ( this.props.error) {
+			return <Fail error={this.props.error}/>
+
+		}
+
+		
 		return (
 			<div className="margen">
-				<table className="tabla">
-					<thead>
+				<table className="table">
+					<thead className="thead-dark">
 						<tr>
-							<th>
-								Nombre
-							</th>
-							<th>
-								Correo
-							</th>
-							<th>
-								Enlace
-							</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Enlace</th>
+              <th scope="col">Posts</th>
 						</tr>
 					</thead>
 					<tbody>
-						{/* <RenderRow users={this.state.users}/>  */}
+						<RenderRow/> 
 					</tbody>
 				</table>
 			</div>
 		)
+
+		
 
 	}
 
@@ -58,4 +59,4 @@ const mapStateToProps = (reducers) => {
 	return reducers.usersReducer;
 };
 
-export default Layout(connect(mapStateToProps, {/*Accion Creator*/})(User));
+export default Layout(connect(mapStateToProps, usersActions)(User));

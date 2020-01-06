@@ -4,10 +4,6 @@ import Header from './Header.jsx';
 
 export default MainContent =>
   class extends Component {
-    constructor(props) {
-      super(props);
-      
-    }
     
 
     renderComponent(props) {  
